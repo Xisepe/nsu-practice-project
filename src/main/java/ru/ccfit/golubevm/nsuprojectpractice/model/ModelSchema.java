@@ -15,6 +15,5 @@ public class ModelSchema extends AbstractDocumentMetaInfo{
     @Indexed
     private String name;
     private int version;
-
     private String jsonSchema;
 }
