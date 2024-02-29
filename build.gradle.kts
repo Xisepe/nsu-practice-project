@@ -1,3 +1,5 @@
+import java.net.URI
+
 plugins {
     java
     id("org.springframework.boot") version "3.2.2"
@@ -17,11 +19,24 @@ configurations {
     }
 }
 
+val xlsParser = repositories.maven {
+    name = "Aspose Java API"
+    url = URI.create("https://repository.aspose.com/repo/")
+}
+
 repositories {
     mavenCentral()
+    mavenLocal()
+    xlsParser
 }
 
 dependencies {
+    implementation("com.aspose:aspose-cells:22.6")
+    // https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
+
+
+
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-web")
@@ -34,4 +49,17 @@ dependencies {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+fun TaskContainerScope.enableUTF8Encoding() {
+    compileJava{
+        options.encoding = "UTF-8"
+    }
+    compileTestJava {
+        options.encoding = "UTF-8"
+    }
+}
+
+tasks {
+    enableUTF8Encoding()
 }
