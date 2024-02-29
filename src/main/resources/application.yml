@@ -1,0 +1,12 @@
+spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+  data:
+    mongodb:
+      username: test
+      password: test
+      database: test-db
+      authentication-database: admin
+
+
