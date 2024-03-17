@@ -13,6 +13,38 @@ services:
       MONGO_INITDB_ROOT_USERNAME: test
       MONGO_INITDB_ROOT_PASSWORD: test
 
+  auth:
+    container_name: keycloak
+    image: quay.io/keycloak/keycloak:latest
+    depends_on:
+      - postgres
+    command: ["start-dev", "--import-realm"]
+    ports:
+      - "${KC_HTTP_PORT}:${KC_HTTP_PORT}"
+    environment:
+      KC_HTTP_PORT: ${KC_HTTP_PORT}
+      KC_DB: ${DB_VENDOR}
+      KC_DB_PASSWORD: ${POSTGRES_PASSWORD}
+      KC_DB_USERNAME: ${POSTGRES_USER}
+      KC_DB_URL: "jdbc:postgresql://postgres:5432/keycloak"
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+
+
+
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+
+
+
 volumes:
   mongodb_data:
     driver: local
